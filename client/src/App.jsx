@@ -1,4 +1,12 @@
+import { useEffect } from "react";
+import socket from "./socketsFolder/socket";
 function App() {
+  // establishing the handshake with the backend for the io
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log(socket.id);
+    });
+  }, []);
   return (
     <>
       <header>
