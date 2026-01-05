@@ -7,7 +7,11 @@ const http = require("http");
 app.use(express.json());
 
 const httpServer = http.createServer(app); //creating http server
-const io = new Server(httpServer); // creating an io instance
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+}); // creating an io instance
 const PORT = 3000;
 
 //io connection initiation
