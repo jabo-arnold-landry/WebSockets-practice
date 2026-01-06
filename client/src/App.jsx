@@ -1,17 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import socket from "./socketsFolder/socket";
+import IdeaBox from "./IdeaBox";
 function App() {
+  const [toggleIdeaBox, setToggler] = useState(true);
+
   // establishing the handshake with the backend for the io
   useEffect(() => {
     socket.on("connect", () => {
       console.log(socket.id);
     });
   }, []);
+
+  function toggleOnAndOffIdeaBox(e) {
+    setToggler((currvalue) => !currvalue);
+  }
+
   return (
     <>
       <header>
         <h1>Title</h1>
-        <button>Add +</button>
+        <button onClick={toggleOnAndOffIdeaBox}>Add +</button>
+        {toggleIdeaBox && (
+          <div>
+            <IdeaBox />
+          </div>
+        )}
       </header>
 
       <main>
