@@ -2,7 +2,7 @@ const express = require("express");
 const { Server } = require("socket.io");
 const app = express();
 const http = require("http");
-
+const response = [];
 //accepting input from the client middleware
 app.use(express.json());
 
@@ -17,6 +17,10 @@ const PORT = 3000;
 //io connection initiation
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} just connected`);
+  socket.on("fromClient", (data) => {
+    response.push({ ...data });
+  });
+  io.emit("liveData", response);
 });
 
 httpServer.listen(PORT, () =>
