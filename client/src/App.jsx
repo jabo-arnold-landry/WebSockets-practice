@@ -9,6 +9,9 @@ function App() {
     socket.on("connect", () => {
       console.log(socket.id);
     });
+    socket.on("liveData", (res) => {
+      console.log(res);
+    });
   }, []);
 
   function toggleOnAndOffIdeaBox(e) {
