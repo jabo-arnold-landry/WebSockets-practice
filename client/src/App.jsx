@@ -12,6 +12,17 @@ function App() {
     socket.on("liveData", (res) => {
       setBlogs(res);
     });
+
+    async function fetchOnLoad() {
+      try {
+        const response = await fetch("http://localhost:3000/currentTalk");
+        const ideas = await response.json();
+        setBlogs(ideas);
+      } catch (err) {
+        console.log("we could not communicate with the server : ", err);
+      }
+    }
+    fetchOnLoad();
   }, []);
 
   function toggleOnAndOffIdeaBox(e) {
@@ -34,7 +45,6 @@ function App() {
         {postedBlogs.length ? (
           postedBlogs.map((element, index) => {
             const { idea } = element;
-            console.log(element);
             return (
               <div key={index}>
                 <p>{idea}</p>
