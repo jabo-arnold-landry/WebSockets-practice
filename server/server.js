@@ -2,9 +2,15 @@ const express = require("express");
 const { Server } = require("socket.io");
 const app = express();
 const http = require("http");
+const cors = require("cors");
 const response = [];
 //accepting input from the client middleware
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+); //allowing all origins to  make request to the server
 
 const httpServer = http.createServer(app); //creating http server
 const io = new Server(httpServer, {
