@@ -18,9 +18,9 @@ const PORT = 3000;
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} just connected`);
   socket.on("fromClient", (data) => {
-    response.push({ ...data });
+    response.push(data);
+    io.emit("liveData", response);
   });
-  io.emit("liveData", response);
 });
 
 httpServer.listen(PORT, () =>
