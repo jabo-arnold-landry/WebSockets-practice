@@ -23,6 +23,10 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get("/currentTalk", (req, res) => {
+  res.status(200).json(response);
+});
+
 httpServer.listen(PORT, () =>
   console.log("successfully connected to " + "" + PORT)
 );
