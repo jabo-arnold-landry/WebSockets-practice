@@ -11,7 +11,7 @@ function IdeaBox() {
   function sendMessageToServer(e) {
     e.preventDefault();
     socket.emit("fromClient", userInput);
-    
+    setUserInput({});
   }
   return (
     <>
@@ -22,6 +22,7 @@ function IdeaBox() {
           placeholder="your thoughts goes here...."
           cols="30"
           rows="4"
+          value={userInput.idea || ""}
           onChange={handleUserInput}
         ></textarea>
         <br />
