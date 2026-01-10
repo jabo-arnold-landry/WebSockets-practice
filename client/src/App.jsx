@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
 function App() {
+  // states initialization and declaration section
   const [toggleIdeaBox, setToggler] = useState(false);
   const [postedBlogs, setBlogs] = useState([]);
   const [comment, setComment] = useState("");
+  const [expandComment, setExpandComment] = useState(false);
+
   // establishing the handshake with the backend for the io
   useEffect(() => {
     socket.on("connect", () => {
@@ -26,8 +29,14 @@ function App() {
     fetchOnLoad();
   }, []);
 
-  function toggleOnAndOffIdeaBox(e) {
+  function toggleOnAndOffIdeaBox() {
     setToggler((currvalue) => !currvalue);
+  }
+
+  function expnadAndCollapseCommentSection(e) {
+    const id = e.target.id;
+    const commentTotoggle = document.querySelector(`[data-id="${id}"]`);
+    commentTotoggle.classList.toggle("activeOne");
   }
 
   return (
@@ -50,9 +59,16 @@ function App() {
               <div key={index}>
                 <div id="idea-box">
                   <p title={idea}>{idea}</p>
-                  <button title="expand comments">+</button>
+                  <button
+                    title="expand comments"
+                    onClick={expnadAndCollapseCommentSection}
+                    id={index}
+                  >
+                    +
+                  </button>
                 </div>
-                <div id="comments">
+
+                <div id="comments" data-id={index}>
                   <p title="comment">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Sunt odio reiciendis placeat ipsa maxime? Optio mollitia
@@ -65,8 +81,13 @@ function App() {
                     onChange={(e) => setComment(e.target.value)}
                   />
                 </div>
+
                 <div id="controls">
-                  <button disabled={comment ? false : true} title="comment">
+                  <button
+                    disabled={comment ? false : true}
+                    title="comment"
+                    id={index}
+                  >
                     comment
                   </button>
                   <button title="like what you see">like</button>
