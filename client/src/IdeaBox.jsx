@@ -26,7 +26,12 @@ function IdeaBox() {
           onChange={handleUserInput}
         ></textarea>
         <br />
-        <button onClick={sendMessageToServer}>Post</button>
+        <button
+          onClick={sendMessageToServer}
+          disabled={userInput.idea ? false : true}
+        >
+          Post
+        </button>
       </form>
     </>
   );

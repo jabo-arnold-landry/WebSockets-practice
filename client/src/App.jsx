@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
 function App() {
-  const [toggleIdeaBox, setToggler] = useState(true);
+  const [toggleIdeaBox, setToggler] = useState(false);
   const [postedBlogs, setBlogs] = useState([]);
   // establishing the handshake with the backend for the io
   useEffect(() => {
@@ -36,7 +36,7 @@ function App() {
         <button onClick={toggleOnAndOffIdeaBox}>Add +</button>
         {toggleIdeaBox && (
           <div>
-            <IdeaBox />
+            <IdeaBox kind={setToggler} />
           </div>
         )}
       </header>
