@@ -48,6 +48,14 @@ function App() {
             return (
               <div key={index}>
                 <p>{idea}</p>
+                <button>+</button>
+                <div id="comments">
+                  <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Sunt odio reiciendis placeat ipsa maxime? Optio mollitia
+                    minus quam obcaecati tempora.
+                  </p>
+                </div>
                 <div className="controls">
                   <button>comment</button>
                   <button>like</button>
