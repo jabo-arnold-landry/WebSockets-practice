@@ -4,6 +4,7 @@ import IdeaBox from "./IdeaBox";
 function App() {
   const [toggleIdeaBox, setToggler] = useState(false);
   const [postedBlogs, setBlogs] = useState([]);
+  const [comment, setComment] = useState("");
   // establishing the handshake with the backend for the io
   useEffect(() => {
     socket.on("connect", () => {
@@ -55,10 +56,15 @@ function App() {
                     Sunt odio reiciendis placeat ipsa maxime? Optio mollitia
                     minus quam obcaecati tempora.
                   </p>
-                  <input type="text" placeholder="you comment goes here" />
+                  <input
+                    type="text"
+                    placeholder="you comment goes here"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
                 </div>
                 <div className="controls">
-                  <button>comment</button>
+                  <button disabled={comment ? false : true}>comment</button>
                   <button>like</button>
                 </div>
               </div>
