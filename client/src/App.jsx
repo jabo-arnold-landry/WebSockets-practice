@@ -48,10 +48,12 @@ function App() {
             const { idea } = element;
             return (
               <div key={index}>
-                <p>{idea}</p>
-                <button>+</button>
+                <div id="idea-box">
+                  <p title={idea}>{idea}</p>
+                  <button title="expand comments">+</button>
+                </div>
                 <div id="comments">
-                  <p>
+                  <p title="comment">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Sunt odio reiciendis placeat ipsa maxime? Optio mollitia
                     minus quam obcaecati tempora.
@@ -63,9 +65,11 @@ function App() {
                     onChange={(e) => setComment(e.target.value)}
                   />
                 </div>
-                <div className="controls">
-                  <button disabled={comment ? false : true}>comment</button>
-                  <button>like</button>
+                <div id="controls">
+                  <button disabled={comment ? false : true} title="comment">
+                    comment
+                  </button>
+                  <button title="like what you see">like</button>
                 </div>
               </div>
             );

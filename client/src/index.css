@@ -75,3 +75,15 @@ button:focus-visible {
     width: 20rem;
   }
 }
+#idea-box {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+#controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
