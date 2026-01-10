@@ -55,6 +55,7 @@ function App() {
                     Sunt odio reiciendis placeat ipsa maxime? Optio mollitia
                     minus quam obcaecati tempora.
                   </p>
+                  <input type="text" placeholder="you comment goes here" />
                 </div>
                 <div className="controls">
                   <button>comment</button>
