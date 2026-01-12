@@ -27,6 +27,17 @@ io.on("connection", (socket) => {
     response.push(data);
     io.emit("liveData", response);
   });
+  socket.on("comment", (req) => {
+    const newResponse = response.find((idea, index) => {
+      if (index === req.contentId) {
+        idea.id = req.contentId;
+        const comments = [];
+        idea[comments] = comments.push(req.comment);
+      }
+    });
+    response.splice(req.contentId, newResponse);
+    io.emit("commentBack", newResponse);
+  });
 });
 
 app.get("/currentTalk", (req, res) => {

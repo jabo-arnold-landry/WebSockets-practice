@@ -17,6 +17,9 @@ function App() {
       setBlogs(res);
     });
 
+    socket.on("commentBack", (res) => {
+      console.log(res);
+    });
     async function fetchOnLoad() {
       try {
         const response = await fetch("http://localhost:3000/currentTalk");
@@ -33,10 +36,10 @@ function App() {
     setToggler((currvalue) => !currvalue);
   }
 
-  function expnadAndCollapseCommentSection(e) {
-    const id = e.target.id;
-    const commentTotoggle = document.querySelector(`[data-id="${id}"]`);
-    commentTotoggle.classList.toggle("activeOne");
+  function createComment(e) {
+    const contentId = e.target.id;
+    socket.emit("comment", { contentId, comment });
+    setComment("");
   }
 
   return (
@@ -59,11 +62,7 @@ function App() {
               <div key={index}>
                 <div id="idea-box">
                   <p title={idea}>{idea}</p>
-                  <button
-                    title="expand comments"
-                    onClick={expnadAndCollapseCommentSection}
-                    id={index}
-                  >
+                  <button title="expand comments" id={index}>
                     +
                   </button>
                 </div>
@@ -87,6 +86,7 @@ function App() {
                     disabled={comment ? false : true}
                     title="comment"
                     id={index}
+                    onClick={createComment}
                   >
                     comment
                   </button>

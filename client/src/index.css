@@ -68,7 +68,6 @@ button:focus-visible {
 }
 #comments {
   margin: 0 2rem;
-  display: none;
   p {
     background-color: white;
     color: red;
