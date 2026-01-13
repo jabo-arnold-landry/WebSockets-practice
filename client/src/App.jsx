@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
+import CommentsFile from "./CommentsFile";
 function App() {
   // states initialization and declaration section
   const [toggleIdeaBox, setToggler] = useState(false);
   const [postedBlogs, setBlogs] = useState([]);
-  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState({}); // Store comments per post ID
   const [expandComment, setExpandComment] = useState(false);
 
   // establishing the handshake with the backend for the io
@@ -17,8 +18,8 @@ function App() {
       setBlogs(res);
     });
 
-    socket.on("commentBack", (res) => {
-      console.log(res);
+    socket.on("commented", (res) => {
+      setBlogs(res);
     });
     async function fetchOnLoad() {
       try {
@@ -30,6 +31,12 @@ function App() {
       }
     }
     fetchOnLoad();
+
+    return () => {
+      socket.off("connect");
+      socket.off("liveData");
+      socket.off("commented");
+    };
   }, []);
 
   function toggleOnAndOffIdeaBox() {
@@ -38,8 +45,14 @@ function App() {
 
   function createComment(e) {
     const contentId = e.target.id;
+    const comment = comments[contentId] || "";
     socket.emit("comment", { contentId, comment });
-    setComment("");
+    // Clear only this specific comment
+    setComments((prev) => ({ ...prev, [contentId]: "" }));
+  }
+
+  function handleCommentChange(postId, value) {
+    setComments((prev) => ({ ...prev, [postId]: value }));
   }
 
   return (
@@ -57,17 +70,27 @@ function App() {
       <main>
         {postedBlogs.length ? (
           postedBlogs.map((element, index) => {
-            const { idea } = element;
+            const { idea, id } = element;
             return (
               <div key={index}>
                 <div id="idea-box">
                   <p title={idea}>{idea}</p>
-                  <button title="expand comments" id={index}>
+                  <button title="expand comments" id={id}>
                     +
                   </button>
                 </div>
-
-                <div id="comments" data-id={index}>
+                {element["comments"].length ? (
+                  <CommentsFile comments={element["comments"]}></CommentsFile>
+                ) : (
+                  <p>This post has no comment</p>
+                )}
+                <input
+                  type="text"
+                  placeholder="you comment goes here"
+                  value={comments[id] || ""}
+                  onChange={(e) => handleCommentChange(id, e.target.value)}
+                />
+                {/* <div id="comments" data-id={index}>
                   <p title="comment">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Sunt odio reiciendis placeat ipsa maxime? Optio mollitia
@@ -76,16 +99,16 @@ function App() {
                   <input
                     type="text"
                     placeholder="you comment goes here"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
+                    value={comments[id] || ""}
+                    onChange={(e) => handleCommentChange(id, e.target.value)}
                   />
-                </div>
+                </div> */}
 
                 <div id="controls">
                   <button
-                    disabled={comment ? false : true}
+                    disabled={comments[id] ? false : true}
                     title="comment"
-                    id={index}
+                    id={id}
                     onClick={createComment}
                   >
                     comment
