@@ -90,19 +90,6 @@ function App() {
                   value={comments[id] || ""}
                   onChange={(e) => handleCommentChange(id, e.target.value)}
                 />
-                {/* <div id="comments" data-id={index}>
-                  <p title="comment">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Sunt odio reiciendis placeat ipsa maxime? Optio mollitia
-                    minus quam obcaecati tempora.
-                  </p>
-                  <input
-                    type="text"
-                    placeholder="you comment goes here"
-                    value={comments[id] || ""}
-                    onChange={(e) => handleCommentChange(id, e.target.value)}
-                  />
-                </div> */}
 
                 <div id="controls">
                   <button
