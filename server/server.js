@@ -24,19 +24,15 @@ const PORT = 3000;
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} just connected`);
   socket.on("fromClient", (data) => {
+    console.log(data);
     response.push(data);
     io.emit("liveData", response);
   });
   socket.on("comment", (req) => {
-    const newResponse = response.find((idea, index) => {
-      if (index === req.contentId) {
-        idea.id = req.contentId;
-        const comments = [];
-        idea[comments] = comments.push(req.comment);
-      }
-    });
-    response.splice(req.contentId, newResponse);
-    io.emit("commentBack", newResponse);
+    const targetContent = response.find((idea) => idea.id === req.contentId);
+    targetContent["comments"].push(req.comment);
+
+    io.emit("commented", response)
   });
 });
 
