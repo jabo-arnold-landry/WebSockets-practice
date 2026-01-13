@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { v4 as id } from "uuid";
 import socket from "./socketsFolder/socket";
 
 function IdeaBox() {
@@ -10,6 +11,8 @@ function IdeaBox() {
   }
   function sendMessageToServer(e) {
     e.preventDefault();
+    userInput.id = id();
+    userInput["comments"] = [];
     socket.emit("fromClient", userInput);
     setUserInput({});
   }
