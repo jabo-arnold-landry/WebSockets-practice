@@ -3,7 +3,10 @@ const { Server } = require("socket.io");
 const app = express();
 const http = require("http");
 const cors = require("cors");
+
 const response = [];
+//import of modules section
+const authRouters = require("./authantication")
 //accepting input from the client middleware
 app.use(express.json());
 app.use(
@@ -36,6 +39,7 @@ io.on("connection", (socket) => {
   });
 });
 
+app.use("ourblog", authRouters)
 app.get("/currentTalk", (req, res) => {
   res.status(200).json(response);
 });
