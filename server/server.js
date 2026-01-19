@@ -8,6 +8,7 @@ const cors = require("cors");
 const response = [];
 //import of modules section
 const authRouters = require("./authantication");
+const tokenVerificationModules = require("./tokenVerification");
 //accepting input from the client middleware
 app.use(express.json());
 app.use(
@@ -41,7 +42,7 @@ io.on("connection", (socket) => {
 });
 
 app.use("/ourblog", authRouters);
-app.get("/currentTalk", (req, res) => {
+app.get("/currentTalk", tokenVerificationModules, (req, res) => {
   res.status(200).json(response);
 });
 
