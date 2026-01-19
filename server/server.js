@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const response = [];
 //import of modules section
-const authRouters = require("./authantication")
+const authRouters = require("./authantication");
 //accepting input from the client middleware
 app.use(express.json());
 app.use(
@@ -35,11 +35,11 @@ io.on("connection", (socket) => {
     const targetContent = response.find((idea) => idea.id === req.contentId);
     targetContent["comments"].push(req.comment);
 
-    io.emit("commented", response)
+    io.emit("commented", response);
   });
 });
 
-app.use("ourblog", authRouters)
+app.use("/ourblog", authRouters);
 app.get("/currentTalk", (req, res) => {
   res.status(200).json(response);
 });
