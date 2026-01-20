@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
 import CommentsFile from "./CommentsFile";
+import Login from "./authanticationFolder/Login";
 function App() {
   // states initialization and declaration section
   const [toggleIdeaBox, setToggler] = useState(false);
@@ -109,6 +110,8 @@ function App() {
           <strong>No Data</strong>
         )}
       </main>
+
+      <Login />
     </>
   );
 }
