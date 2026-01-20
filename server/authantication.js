@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 
-const users = [];
+const users = [
+  {
+    names: "jabo",
+    email: "arnoldjabo@gmail.com",
+  },
+];
 //acc creation endpoints
 router.post("/signup", async (req, res) => {
   const userData = req.body;
@@ -22,10 +27,16 @@ router.post("/login", async (req, res) => {
       .json({ message: "the user is not part of the community!" });
 
   //signing token for the user
-  const token = jwt.sign(foundUser, process.env.SECRET_KEY, {
+  const accessToken = jwt.sign(foundUser, process.env.SECRET_KEY, {
     expiresIn: "2m",
   });
-  res.status(200).json({ message: "Welcomeback", token });
+
+  const refreshToken = jwt.sign(foundUser, process.env.REFRESH_KEY, {
+    expiresIn: "20m",
+  });
+  res.cookie("token", refreshToken, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+
+  res.status(200).json({ message: "Welcomeback", accessToken });
 });
 
 module.exports = router;
