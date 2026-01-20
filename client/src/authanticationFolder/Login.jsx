@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { sendingUserData } from "../AuthanticationAPI/login";
+import { sendingUserData } from "../api/authanticationsEndpoint";
 
 function Login() {
   const [userData, setUserData] = useState({
