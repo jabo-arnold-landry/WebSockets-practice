@@ -4,23 +4,28 @@ const { Server } = require("socket.io");
 const app = express();
 const http = require("http");
 const cors = require("cors");
+const cookieParse = require("cookie-parser");
 
 const response = [];
 //import of modules section
 const authRouters = require("./authantication");
 const tokenVerificationModules = require("./tokenVerification");
+const regenerateAccesToken = require("./refreshRegeneration");
 //accepting input from the client middleware
 app.use(express.json());
 app.use(
   cors({
     origin: "*",
-  })
+  }),
 ); //allowing all origins to  make request to the server
+
+app.use(cookieParse());
 
 const httpServer = http.createServer(app); //creating http server
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:5173",
+    credentials: true,
   },
 }); // creating an io instance
 const PORT = 3000;
@@ -45,7 +50,7 @@ app.use("/ourblog", authRouters);
 app.get("/currentTalk", tokenVerificationModules, (req, res) => {
   res.status(200).json(response);
 });
-
+app.get("/newaccesToken", regenerateAccesToken);
 httpServer.listen(PORT, () =>
-  console.log("successfully connected to " + "" + PORT)
+  console.log("successfully connected to " + "" + PORT),
 );
