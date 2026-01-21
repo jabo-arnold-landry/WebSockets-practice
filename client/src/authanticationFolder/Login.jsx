@@ -1,13 +1,15 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { sendingUserData } from "../api/authanticationsEndpoint";
+import {AuthContext} from "../contexts/useAuth";
 
 function Login() {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
-  const [token, setToken] = useState(null);
+
+  const { setUser } = useContext(AuthContext);
 
   function handleInputs(e) {
     e.preventDefault();
@@ -24,7 +26,7 @@ function Login() {
           const accessToken = await sendingUserData(userData);
           console.log(accessToken);
           if (!accessToken) return alert("unable to fetch Data");
-          setToken(accessToken);
+          setUser(accessToken);
         }}
       >
         {/* {console.log(token)} */}
