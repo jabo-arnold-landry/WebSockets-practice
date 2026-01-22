@@ -31,6 +31,7 @@ function App() {
       try {
         const response = await fetch("http://localhost:3000/currentTalk", {
           headers: { "Authorization ": `Bearer ${user}` },
+          credentials: "include"
         });
         const ideas = await response.json();
         setBlogs(ideas);

@@ -4,6 +4,7 @@ export const sendingUserData = async (userData) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
+      credentials: "include",
     });
     if (!response.ok) throw new Error("there was an error fetching data");
     let data = await response.json();
