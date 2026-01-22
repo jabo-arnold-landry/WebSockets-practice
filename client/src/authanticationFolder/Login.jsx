@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useContext } from "react";
 import { sendingUserData } from "../api/authanticationsEndpoint";
-import {AuthContext} from "../contexts/useAuth";
+import { AuthContext } from "../contexts/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [userData, setUserData] = useState({
@@ -10,6 +11,7 @@ function Login() {
   });
 
   const { setUser } = useContext(AuthContext);
+  let location = useNavigate();
 
   function handleInputs(e) {
     e.preventDefault();
@@ -23,10 +25,12 @@ function Login() {
         action=""
         onSubmit={async (e) => {
           e.preventDefault();
+
           const accessToken = await sendingUserData(userData);
           console.log(accessToken);
           if (!accessToken) return alert("unable to fetch Data");
           setUser(accessToken);
+          location("/", { replace: true });
         }}
       >
         {/* {console.log(token)} */}
