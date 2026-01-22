@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
 import CommentsFile from "./CommentsFile";
 import Login from "./authanticationFolder/Login";
+import { AuthContext } from "./contexts/useAuth";
 function App() {
+  const { user } = useContext(AuthContext);
   // states initialization and declaration section
   const [toggleIdeaBox, setToggler] = useState(false);
   const [postedBlogs, setBlogs] = useState([]);
@@ -24,7 +26,9 @@ function App() {
     });
     async function fetchOnLoad() {
       try {
-        const response = await fetch("http://localhost:3000/currentTalk");
+        const response = await fetch("http://localhost:3000/currentTalk", {
+          headers: { "Authorization ": `Bearer ${user}` },
+        });
         const ideas = await response.json();
         setBlogs(ideas);
       } catch (err) {
