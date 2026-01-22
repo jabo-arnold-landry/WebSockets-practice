@@ -34,7 +34,7 @@ router.post("/login", async (req, res) => {
   const refreshToken = jwt.sign(foundUser, process.env.REFRESH_KEY, {
     expiresIn: "20m",
   });
-  res.cookie("token", refreshToken, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+  res.cookie("token", refreshToken, { httpOnly: true, maxAge: 60 * 60 * 1000, secure: false, sameSite: "none" });
 
   res.status(200).json({ message: "Welcomeback", accessToken });
 });
