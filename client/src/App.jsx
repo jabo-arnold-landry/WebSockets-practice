@@ -31,7 +31,7 @@ function App() {
       try {
         const response = await fetch("http://localhost:3000/currentTalk", {
           headers: { "Authorization ": `Bearer ${user}` },
-          credentials: "include"
+          credentials: "include",
         });
         const ideas = await response.json();
         setBlogs(ideas);
@@ -46,7 +46,7 @@ function App() {
       socket.off("liveData");
       socket.off("commented");
     };
-  }, []);
+  }, [user]);
 
   function toggleOnAndOffIdeaBox() {
     setToggler((currvalue) => !currvalue);
