@@ -15,7 +15,8 @@ const regenerateAccesToken = require("./refreshRegeneration");
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
+    credentials: true,
   }),
 ); //allowing all origins to  make request to the server
 
