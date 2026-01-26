@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import axios from "axios";
 import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
 import CommentsFile from "./CommentsFile";
@@ -6,6 +7,7 @@ import Login from "./authanticationFolder/Login";
 import { AuthContext } from "./contexts/useAuth";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoute";
+import api from "./api/axiosFile";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -29,12 +31,8 @@ function App() {
     });
     async function fetchOnLoad() {
       try {
-        const response = await fetch("http://localhost:3000/currentTalk", {
-          headers: { "Authorization ": `Bearer ${user}` },
-          credentials: "include",
-        });
-        const ideas = await response.json();
-        setBlogs(ideas);
+        const response = await api.get("/currentTalk");
+        setBlogs(response.data);
       } catch (err) {
         console.log("we could not communicate with the server : ", err);
       }
