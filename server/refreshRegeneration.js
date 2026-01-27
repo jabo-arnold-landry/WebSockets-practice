@@ -10,7 +10,6 @@ const regenerateAccesToken = async (req, res, next) => {
     }
     const newAccessToken = jwt.sign(data, process.env.SECRET_KEY);
     res.status(200).json(newAccessToken);
-    next();
   });
 };
 

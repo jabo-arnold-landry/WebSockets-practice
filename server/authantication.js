@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
   });
 
   const refreshToken = jwt.sign(foundUser, process.env.REFRESH_KEY, {
-    expiresIn: "20m",
+    expiresIn: "1h",
   });
   res.cookie("token", refreshToken, { httpOnly: true, maxAge: 60 * 60 * 1000, secure: false, sameSite: "lax" });
 
