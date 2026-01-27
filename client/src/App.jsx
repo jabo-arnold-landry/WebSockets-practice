@@ -7,9 +7,10 @@ import Login from "./authanticationFolder/Login";
 import { AuthContext } from "./contexts/useAuth";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoute";
-import api from "./api/axiosFile";
+import useAxiosPrivate from "./api/useAxios";
 
 function App() {
+  const fetching = useAxiosPrivate();
   const { user } = useContext(AuthContext);
   // states initialization and declaration section
   const [toggleIdeaBox, setToggler] = useState(false);
@@ -29,9 +30,10 @@ function App() {
     socket.on("commented", (res) => {
       setBlogs(res);
     });
+    if (!user) return;
     async function fetchOnLoad() {
       try {
-        const response = await api.get("/currentTalk");
+        const response = await fetching.get("/currentTalk");
         setBlogs(response.data);
       } catch (err) {
         console.log("we could not communicate with the server : ", err);

@@ -1,4 +1,4 @@
-import api from "./axiosFile";
+import api from "./defaultPoint";
 
 export const sendingUserData = async (userData) => {
   try {
