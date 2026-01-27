@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const verifyingUser = (req, res, next) => {
-  const authHeaders = req.header.Authorization || req.header.authorization;
+  const authHeaders = req.headers.Authorization || req.headers.authorization;
   if (!authHeaders)
     return res.status(403).json({ message: "Not allowed to attempt so" });
   let token = authHeaders.split(" ")[1];
