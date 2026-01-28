@@ -28,13 +28,18 @@ router.post("/login", async (req, res) => {
 
   //signing token for the user
   const accessToken = jwt.sign(foundUser, process.env.SECRET_KEY, {
-    expiresIn: "2m",
+    expiresIn: "10s",
   });
 
   const refreshToken = jwt.sign(foundUser, process.env.REFRESH_KEY, {
-    expiresIn: "1h",
+    expiresIn: "1m",
   });
-  res.cookie("token", refreshToken, { httpOnly: true, maxAge: 60 * 60 * 1000, secure: false, sameSite: "lax" });
+  res.cookie("token", refreshToken, {
+    httpOnly: true,
+    maxAge: 60 * 60 * 1000,
+    secure: false,
+    sameSite: "lax",
+  });
 
   res.status(200).json({ message: "Welcomeback", accessToken });
 });
