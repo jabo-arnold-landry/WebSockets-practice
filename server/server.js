@@ -6,11 +6,28 @@ const http = require("http");
 const cors = require("cors");
 const cookieParse = require("cookie-parser");
 
-const response = [];
+const response = [
+  {
+    idea: "jkl\n",
+    id: "76976e86-8b9c-4135-b4c8-bf047934151b",
+    comments: [],
+  },
+  {
+    idea: "hj,.\n",
+    id: "07b5f904-8ac3-427a-8c3c-c2359887e922",
+    comments: [],
+  },
+  {
+    idea: "kjkj",
+    id: "49d6edcc-398c-40d6-ae9b-ed716cb0f103",
+    comments: [],
+  },
+];
 //import of modules section
 const authRouters = require("./authantication");
 const tokenVerificationModules = require("./tokenVerification");
 const regenerateAccesToken = require("./refreshRegeneration");
+const verifyingUser = require("./tokenVerification");
 //accepting input from the client middleware
 app.use(express.json());
 app.use(
@@ -52,6 +69,9 @@ app.get("/currentTalk", tokenVerificationModules, (req, res) => {
   res.status(200).json(response);
 });
 app.get("/newaccesToken", regenerateAccesToken);
+app.get("/list", verifyingUser, async (req, res) => {
+  res.status(200).json(response);
+});
 httpServer.listen(PORT, () =>
   console.log("successfully connected to " + "" + PORT),
 );

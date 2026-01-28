@@ -5,9 +5,10 @@ import IdeaBox from "./IdeaBox";
 import CommentsFile from "./CommentsFile";
 import Login from "./authanticationFolder/Login";
 import { AuthContext } from "./contexts/useAuth";
-import { Route, Routes } from "react-router-dom";
+import { NavLink, replace, Route, Routes, useNavigate } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoute";
 import useAxiosPrivate from "./api/useAxios";
+import Testing from "./Testing";
 
 function App() {
   const fetching = useAxiosPrivate();
@@ -17,6 +18,7 @@ function App() {
   const [postedBlogs, setBlogs] = useState([]);
   const [comments, setComments] = useState({}); // Store comments per post ID
   const [expandComment, setExpandComment] = useState(false);
+  const navigate = useNavigate;
 
   // establishing the handshake with the backend for the io
   useEffect(() => {
@@ -37,6 +39,7 @@ function App() {
         setBlogs(response.data);
       } catch (err) {
         console.log("we could not communicate with the server : ", err);
+        navigate("/login", { replace: true });
       }
     }
     fetchOnLoad();
@@ -128,9 +131,11 @@ function App() {
                     <strong>No Data</strong>
                   )}
                 </main>
+                <NavLink to="/test">Test</NavLink>
               </>
             }
           />
+          <Route path="/test" element={<Testing />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
