@@ -9,6 +9,8 @@ import { NavLink, replace, Route, Routes, useNavigate } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoute";
 import useAxiosPrivate from "./api/useAxios";
 import Testing from "./Testing";
+import PersistLogin from "./LoginPersist/PersistLogin";
+import NotFound from "./NotFound";
 
 function App() {
   const fetching = useAxiosPrivate();
@@ -70,72 +72,74 @@ function App() {
   return (
     <>
       <Routes>
-        <Route element={<ProtectedRoutes />}>
-          <Route
-            path="/"
-            element={
-              <>
-                <header>
-                  <h1>Title</h1>
-                  <button onClick={toggleOnAndOffIdeaBox}>Add +</button>
-                  {toggleIdeaBox && (
-                    <div>
-                      <IdeaBox kind={setToggler} />
-                    </div>
-                  )}
-                </header>
+        <Route element={<PersistLogin />}>
+          <Route element={<ProtectedRoutes />}>
+            <Route
+              path="/"
+              element={
+                <>
+                  <header>
+                    <h1>Title</h1>
+                    <button onClick={toggleOnAndOffIdeaBox}>Add +</button>
+                    {toggleIdeaBox && (
+                      <div>
+                        <IdeaBox kind={setToggler} />
+                      </div>
+                    )}
+                  </header>
 
-                <main>
-                  {postedBlogs.length ? (
-                    postedBlogs.map((element, index) => {
-                      const { idea, id } = element;
-                      return (
-                        <div key={index}>
-                          <div id="idea-box">
-                            <p title={idea}>{idea}</p>
-                            <button title="expand comments" id={id}>
-                              +
-                            </button>
-                          </div>
-                          {element["comments"].length ? (
-                            <CommentsFile
-                              comments={element["comments"]}
-                            ></CommentsFile>
-                          ) : (
-                            <p>This post has no comment</p>
-                          )}
-                          <input
-                            type="text"
-                            placeholder="you comment goes here"
-                            value={comments[id] || ""}
-                            onChange={(e) =>
-                              handleCommentChange(id, e.target.value)
-                            }
-                          />
+                  <main>
+                    {postedBlogs.length ? (
+                      postedBlogs.map((element, index) => {
+                        const { idea, id } = element;
+                        return (
+                          <div key={index}>
+                            <div id="idea-box">
+                              <p title={idea}>{idea}</p>
+                              <button title="expand comments" id={id}>
+                                +
+                              </button>
+                            </div>
+                            {element["comments"].length ? (
+                              <CommentsFile
+                                comments={element["comments"]}
+                              ></CommentsFile>
+                            ) : (
+                              <p>This post has no comment</p>
+                            )}
+                            <input
+                              type="text"
+                              placeholder="you comment goes here"
+                              value={comments[id] || ""}
+                              onChange={(e) =>
+                                handleCommentChange(id, e.target.value)
+                              }
+                            />
 
-                          <div id="controls">
-                            <button
-                              disabled={comments[id] ? false : true}
-                              title="comment"
-                              id={id}
-                              onClick={createComment}
-                            >
-                              comment
-                            </button>
-                            <button title="like what you see">like</button>
+                            <div id="controls">
+                              <button
+                                disabled={comments[id] ? false : true}
+                                title="comment"
+                                id={id}
+                                onClick={createComment}
+                              >
+                                comment
+                              </button>
+                              <button title="like what you see">like</button>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <strong>No Data</strong>
-                  )}
-                </main>
-                <NavLink to="/test">Test</NavLink>
-              </>
-            }
-          />
-          <Route path="/test" element={<Testing />} />
+                        );
+                      })
+                    ) : (
+                      <strong>No Data</strong>
+                    )}
+                  </main>
+                  <NavLink to="/test">Test</NavLink>
+                </>
+              }
+            />
+            <Route path="/test" element={<Testing />} />
+          </Route>
         </Route>
 
         <Route path="/login" element={<Login />} />
