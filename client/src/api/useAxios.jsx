@@ -5,7 +5,7 @@ import newAccessToken from "./refreshToken";
 import { privateEndpoint } from "./defaultPoint";
 
 const useAxiosPrivate = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   useEffect(() => {
     const requestInterceptor = privateEndpoint.interceptors.request.use(
       (config) => {
@@ -19,9 +19,10 @@ const useAxiosPrivate = () => {
       (res) => res,
       async (err) => {
         const previousRequest = err?.config;
-        if (err.response?.status === 403 && !previousRequest?.sent) {
+        if (err.response?.status === 401 && !previousRequest?.sent) {
           previousRequest.sent = true;
           const accessToken = await newAccessToken();
+          setUser(accessToken);
           previousRequest.headers["Authorization"] = `Bearer ${accessToken}`;
           return privateEndpoint(previousRequest);
         }
@@ -33,7 +34,7 @@ const useAxiosPrivate = () => {
       privateEndpoint.interceptors.response.eject(responseInterceptor);
     };
   }, [user]);
-
+  
   return privateEndpoint;
 };
 export default useAxiosPrivate;
