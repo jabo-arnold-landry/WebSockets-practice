@@ -14,7 +14,7 @@ import NotFound from "./NotFound";
 
 function App() {
   const fetching = useAxiosPrivate();
-  const { user } = useContext(AuthContext);
+  const { user, setUserData } = useContext(AuthContext);
   // states initialization and declaration section
   const [toggleIdeaBox, setToggler] = useState(false);
   const [postedBlogs, setBlogs] = useState([]);
@@ -38,7 +38,8 @@ function App() {
     async function fetchOnLoad() {
       try {
         const response = await fetching.get("/currentTalk");
-        setBlogs(response.data);
+        setUserData(response.data.userDetails);
+        setBlogs(response.data.response);
       } catch (err) {
         console.log("we could not communicate with the server : ", err);
         navigate("/login", { replace: true });
