@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const { AccountCreation } = require("./model/siteModels");
-const { v4: uuid, v4 } = require("uuid");
+const { v4 } = require("uuid");
 
 const users = [
   {
