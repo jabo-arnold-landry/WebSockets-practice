@@ -8,18 +8,8 @@ const cookieParse = require("cookie-parser");
 
 const response = [
   {
-    idea: "jkl\n",
-    id: "76976e86-8b9c-4135-b4c8-bf047934151b",
-    comments: [],
-  },
-  {
-    idea: "hj,.\n",
-    id: "07b5f904-8ac3-427a-8c3c-c2359887e922",
-    comments: [],
-  },
-  {
-    idea: "kjkj",
-    id: "49d6edcc-398c-40d6-ae9b-ed716cb0f103",
+    idea: "Hi",
+    id: "a4ff83b1-93da-452b-b33b-c80851bb4b88",
     comments: [],
   },
 ];
@@ -52,8 +42,8 @@ const PORT = 3000;
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} just connected`);
   socket.on("fromClient", (data) => {
-    console.log(data);
     response.push(data);
+    console.log(response);
     io.emit("liveData", response);
   });
   socket.on("comment", (req) => {
@@ -66,7 +56,8 @@ io.on("connection", (socket) => {
 
 app.use("/ourblog", authRouters);
 app.get("/currentTalk", tokenVerificationModules, (req, res) => {
-  res.status(200).json(response);
+  let userDetails = req.user;
+  res.status(200).json({ response, userDetails });
 });
 app.get("/newaccesToken", regenerateAccesToken);
 app.get("/list", verifyingUser, async (req, res) => {
