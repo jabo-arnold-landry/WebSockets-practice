@@ -22,8 +22,8 @@ router.post("/signup", async (req, res) => {
   if (!userData)
     return res.status(400).json({ message: "input the information please!" });
 
-  const findEmail = users.find((user) => user.email === userData.email);
-  if (findEmail)
+  const mailExist = users.find((user) => user.email === userData.email);
+  if (mailExist)
     return res
       .status(400)
       .json({ message: "The email exists in the community" });
