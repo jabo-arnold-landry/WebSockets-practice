@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
-import { v4 as id } from "uuid";
+import { useState, useEffect, useContext } from "react";
 import socket from "./socketsFolder/socket";
+import { AuthContext } from "./contexts/useAuth";
 
 function IdeaBox() {
   let [userInput, setUserInput] = useState({});
+  const { userData } = useContext(AuthContext);
 
   function handleUserInput(e) {
     const { name, value } = e.target;
@@ -11,11 +12,11 @@ function IdeaBox() {
   }
   function sendMessageToServer(e) {
     e.preventDefault();
-    userInput.id = id();
-    userInput["comments"] = [];
+    userInput.commenterID = userData.id;
     socket.emit("fromClient", userInput);
     setUserInput({});
   }
+
   return (
     <>
       <form action="">

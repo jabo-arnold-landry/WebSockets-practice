@@ -91,13 +91,13 @@ function App() {
 
                   <main>
                     {postedBlogs.length ? (
-                      postedBlogs.map((element, index) => {
-                        const { idea, id } = element;
+                      postedBlogs.map((element) => {
+                        const { postContents, postID } = element;
                         return (
-                          <div key={index}>
+                          <div key={postID}>
                             <div id="idea-box">
-                              <p title={idea}>{idea}</p>
-                              <button title="expand comments" id={id}>
+                              <p title={postContents}>{postContents}</p>
+                              <button title="expand comments" id={postID}>
                                 +
                               </button>
                             </div>
@@ -111,7 +111,7 @@ function App() {
                             <input
                               type="text"
                               placeholder="you comment goes here"
-                              value={comments[id] || ""}
+                              value={comments[postID] || ""}
                               onChange={(e) =>
                                 handleCommentChange(id, e.target.value)
                               }
@@ -119,9 +119,9 @@ function App() {
 
                             <div id="controls">
                               <button
-                                disabled={comments[id] ? false : true}
+                                disabled={comments[postID] ? false : true}
                                 title="comment"
-                                id={id}
+                                id={postID}
                                 onClick={createComment}
                               >
                                 comment
