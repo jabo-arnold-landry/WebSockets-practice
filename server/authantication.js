@@ -1,18 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const { AccountCreation } = require("./model/siteModels");
+const { AccountCreation, users } = require("./model/siteModels");
 const { v4 } = require("uuid");
-
-const users = [
-  {
-    id: "7c30335f-b5eb-4975-92d6-7f477db6835e",
-    names: "arnold",
-    email: "arnoldjabo@gmail.com",
-    postCreated: [],
-    postCommented: [],
-  },
-];
 
 //acc creation endpoints
 router.post("/signup", async (req, res) => {
