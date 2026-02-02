@@ -5,19 +5,15 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const cookieParse = require("cookie-parser");
+const { v4 } = require("uuid");
 
-const response = [
-  {
-    idea: "Hi",
-    id: "a4ff83b1-93da-452b-b33b-c80851bb4b88",
-    comments: [],
-  },
-];
+const response = [];
 //import of modules section
 const authRouters = require("./authantication");
 const tokenVerificationModules = require("./tokenVerification");
 const regenerateAccesToken = require("./refreshRegeneration");
 const verifyingUser = require("./tokenVerification");
+const { Idea, users } = require("./model/siteModels");
 //accepting input from the client middleware
 app.use(express.json());
 app.use(
@@ -42,8 +38,11 @@ const PORT = 3000;
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} just connected`);
   socket.on("fromClient", (data) => {
-    response.push(data);
-    console.log(response);
+    const postID = v4();
+    const newPostInstance = new Idea(postID, data.commenterID, data.idea);
+    const ideaOwner = users.findIndex((user) => user.id === data.commenterID);
+    users[ideaOwner].postCreated.push(postID);
+    response.push(newPostInstance);
     io.emit("liveData", response);
   });
   socket.on("comment", (req) => {
@@ -55,7 +54,7 @@ io.on("connection", (socket) => {
 });
 
 app.use("/ourblog", authRouters);
-app.get("/currentTalk", tokenVerificationModules, (req, res) => {
+app.get("/currentTalk", verifyingUser, (req, res) => {
   let userDetails = req.user;
   res.status(200).json({ response, userDetails });
 });
