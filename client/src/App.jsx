@@ -113,7 +113,7 @@ function App() {
                               placeholder="you comment goes here"
                               value={comments[postID] || ""}
                               onChange={(e) =>
-                                handleCommentChange(id, e.target.value)
+                                handleCommentChange(postID, e.target.value)
                               }
                             />
 
