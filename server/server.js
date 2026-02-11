@@ -39,17 +39,13 @@ io.on("connection", (socket) => {
   console.log(`Client ${socket.id} just connected`);
   socket.on("fromClient", (data) => {
     const postID = v4();
-    const newPostInstance = new Idea(postID, data.commenterID, data.idea);
-    const ideaOwner = users.findIndex((user) => user.id === data.commenterID);
-    users[ideaOwner].postCreated.push(postID);
-    response.push(newPostInstance);
+    const newPostInstance = new Idea(postID, data.postOwnerID, data.idea);
+    const ideaOwner = users.find((user) => user.id === data.postOwnerID);
+    let indexOwner = users.indexOf(ideaOwner);
+    users[indexOwner].postCreated.push(postID);
+    const { names, email } = ideaOwner;
+    response.push({ ...newPostInstance, names, email });
     io.emit("liveData", response);
-  });
-  socket.on("comment", (req) => {
-    const targetContent = response.find((idea) => idea.id === req.contentId);
-    targetContent["comments"].push(req.comment);
-
-    io.emit("commented", response);
   });
 });
 
