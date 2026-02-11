@@ -12,7 +12,7 @@ function IdeaBox() {
   }
   function sendMessageToServer(e) {
     e.preventDefault();
-    userInput.commenterID = userData.id;
+    userInput.postOwnerID = userData.id;
     socket.emit("fromClient", userInput);
     setUserInput({});
   }
