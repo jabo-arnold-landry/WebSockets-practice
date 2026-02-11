@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useContext } from "react";
 import { sendingUserData } from "../api/authanticationsEndpoint";
 import { AuthContext } from "../contexts/useAuth";
@@ -18,22 +17,22 @@ function Login() {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   }
+
+  async function redirectAndAssignToken(e) {
+    e.preventDefault();
+
+    const accessToken = await sendingUserData(userData);
+
+    if (!accessToken) return alert("unable to fetch Data");
+
+    setUser(accessToken);
+    location("/", { replace: true });
+  }
+
   return (
     <>
       <h1>Creat accound</h1>
-      <form
-        action=""
-        onSubmit={async (e) => {
-          e.preventDefault();
-
-          const accessToken = await sendingUserData(userData);
-          console.log(accessToken);
-          if (!accessToken) return alert("unable to fetch Data");
-          setUser(accessToken);
-          location("/", { replace: true });
-        }}
-      >
-        {/* {console.log(token)} */}
+      <form action="" onSubmit={redirectAndAssignToken}>
         <div className="input-group">
           <label htmlFor="email">email</label>
           <input
