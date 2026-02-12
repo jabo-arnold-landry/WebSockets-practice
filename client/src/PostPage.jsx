@@ -3,6 +3,7 @@ import socket from "./socketsFolder/socket";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./contexts/useAuth";
 import useAxiosPrivate from "./api/useAxios";
+import IdeaCard from "./src/IdeaCard";
 
 function PostPage() {
   const [posts, setPosts] = useState([]);
@@ -42,20 +43,13 @@ function PostPage() {
       socket.off("commented");
     };
   }, [user]);
-
   return (
     <main>
       {posts.length ? (
-        posts.map((element) => {
-          const { postContents, postID } = element;
+        posts.map((element, index) => {
           return (
-            <div key={postID}>
-              <div id="idea-box">
-                <p title={postContents}>{postContents}</p>
-                <button title="expand comments" id={postID}>
-                  +
-                </button>
-              </div>
+            <div key={index}>
+              <IdeaCard key={index} {...element} />
             </div>
           );
         })
