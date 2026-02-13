@@ -1,11 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function IdeaCard(post) {
   return (
     <>
       <section className="user-info">
-        <strong>{post.names}</strong>
-        <p>{post.email}</p>
+        <Link to="/test">
+          <strong>{post.names}</strong>
+          <p>{post.email}</p>
+        </Link>
       </section>
       <main>
         <p className="idea">{post.postContents}</p>
