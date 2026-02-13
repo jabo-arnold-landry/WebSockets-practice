@@ -3,11 +3,12 @@ import { useState } from "react";
 import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
 import Login from "./authanticationFolder/Login";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Router, Routes, useNavigate } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoute";
 import PersistLogin from "./LoginPersist/PersistLogin";
 import NotFound from "./NotFound";
 import PostPage from "./PostPage";
+import MessageSection from "./src/src/MessageSection";
 
 function App() {
   // states initialization and declaration section
@@ -34,11 +35,12 @@ function App() {
                       </div>
                     )}
                   </header>
-
                   <PostPage />
                 </>
               }
             />
+
+            <Route path="/chat" element={<MessageSection />} />
           </Route>
         </Route>
 
