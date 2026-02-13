@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import socket from "./socketsFolder/socket";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./contexts/useAuth";
 import useAxiosPrivate from "./api/useAxios";
 import IdeaCard from "./src/IdeaCard";
@@ -44,19 +44,22 @@ function PostPage() {
     };
   }, [user]);
   return (
-    <main>
-      {posts.length ? (
-        posts.map((element, index) => {
-          return (
-            <div key={index}>
-              <IdeaCard key={index} {...element} />
-            </div>
-          );
-        })
-      ) : (
-        <strong>No Data</strong>
-      )}
-    </main>
+    <>
+      <Link to="/chat">chat</Link>
+      <main>
+        {posts.length ? (
+          posts.map((element, index) => {
+            return (
+              <div key={index}>
+                <IdeaCard key={index} {...element} />
+              </div>
+            );
+          })
+        ) : (
+          <strong>No Data</strong>
+        )}
+      </main>
+    </>
   );
 }
 
