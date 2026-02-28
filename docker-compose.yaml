@@ -1,8 +1,11 @@
 version: "3.8"
 services:
   server:
-    build: /app
+    build: ./server
     container_name: blog-container
-    ports: -3000:3000
+    ports:
+      - "3000:3000"
     volumes:
-      -
+      - ./server:/app
+      - /app/node_modules
+
