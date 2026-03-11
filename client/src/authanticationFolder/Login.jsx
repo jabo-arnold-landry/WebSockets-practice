@@ -1,26 +1,21 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { sendingUserData } from "../api/authanticationsEndpoint";
 import { AuthContext } from "../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useFormStatus } from "react-dom";
 
 function Login() {
-  const [userData, setUserData] = useState({
-    email: "",
-    password: "",
-  });
-
   const { setUser } = useContext(AuthContext);
   let location = useNavigate();
 
-  function handleInputs(e) {
-    e.preventDefault();
-    const { name, value } = e.target;
-    setUserData((prev) => ({ ...prev, [name]: value }));
-  }
+  async function redirectAndAssignToken(data) {
+    const email = data.get("email");
+    const pwd = data.get("password");
 
-  async function redirectAndAssignToken(e) {
-    e.preventDefault();
+    if (!email || !pwd)
+      return alert("all input field(s) are required fill them to continue");
 
+    const userData = { email, pwd };
     const accessToken = await sendingUserData(userData);
 
     if (!accessToken) return alert("unable to fetch Data");
@@ -32,7 +27,7 @@ function Login() {
   return (
     <>
       <h1>Creat accound</h1>
-      <form action="" onSubmit={redirectAndAssignToken}>
+      <form action={redirectAndAssignToken}>
         <div className="input-group">
           <label htmlFor="email">email</label>
           <input
@@ -40,8 +35,6 @@ function Login() {
             name="email"
             id="email"
             placeholder="email goes here"
-            value={userData.email}
-            onChange={handleInputs}
           />
           <br />
         </div>
@@ -52,14 +45,20 @@ function Login() {
             name="password"
             id="password"
             placeholder="***"
-            value={userData.password}
-            onChange={handleInputs}
           />
           <br />
         </div>
-        <button>Create</button>
+        <SubmitBtn />
       </form>
     </>
+  );
+}
+
+function SubmitBtn() {
+  const data = useFormStatus();
+  let isLoading = data.pending;
+  return (
+    <button disabled={isLoading}>{isLoading ? "sending..." : "Create"}</button>
   );
 }
 
