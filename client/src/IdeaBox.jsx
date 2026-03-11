@@ -1,40 +1,30 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useActionState } from "react";
 import socket from "./socketsFolder/socket";
 import { AuthContext } from "./contexts/useAuth";
 
 function IdeaBox() {
-  let [userInput, setUserInput] = useState({});
+  const [_, action, isLoading] = useActionState(sendMessageToServer, "none");
   const { userData } = useContext(AuthContext);
 
-  function handleUserInput(e) {
-    const { name, value } = e.target;
-    setUserInput((currData) => ({ ...currData, [name]: value }));
-  }
-  function sendMessageToServer(e) {
-    e.preventDefault();
-    userInput.postOwnerID = userData.id;
-    socket.emit("fromClient", userInput);
-    setUserInput({});
+  function sendMessageToServer(_, formData) {
+    const idea = formData.get("idea");
+    const msg = { postOwnerID: userData.id, idea };
+    socket.emit("fromClient", msg);
   }
 
   return (
     <>
-      <form action="">
+      <form action={action} method="post">
         <textarea
           name="idea"
           id="idea"
           placeholder="your thoughts goes here...."
           cols="30"
           rows="4"
-          value={userInput.idea || ""}
-          onChange={handleUserInput}
         ></textarea>
         <br />
-        <button
-          onClick={sendMessageToServer}
-          disabled={userInput.idea ? false : true}
-        >
-          Post
+        <button onClick={sendMessageToServer} disabled={isLoading}>
+          {isLoading ? "Posting..." : "post"}
         </button>
       </form>
     </>
