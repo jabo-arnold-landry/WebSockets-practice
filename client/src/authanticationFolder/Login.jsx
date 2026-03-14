@@ -11,7 +11,7 @@ function Login() {
   async function redirectAndAssignToken(formData) {
     const userData = Object.fromEntries(formData);
 
-    if (userData.name == null || userData.password)
+    if (userData.name == "" || userData.password == "")
       return alert("all input field(s) are required fill them to continue");
     const accessToken = await sendingUserData(userData);
 
