@@ -8,14 +8,11 @@ function Login() {
   const { setUser } = useContext(AuthContext);
   let location = useNavigate();
 
-  async function redirectAndAssignToken(data) {
-    const email = data.get("email");
-    const pwd = data.get("password");
+  async function redirectAndAssignToken(formData) {
+    const userData = Object.fromEntries(formData);
 
-    if (!email || !pwd)
+    if (userData.name == null || userData.password)
       return alert("all input field(s) are required fill them to continue");
-
-    const userData = { email, pwd };
     const accessToken = await sendingUserData(userData);
 
     if (!accessToken) return alert("unable to fetch Data");
