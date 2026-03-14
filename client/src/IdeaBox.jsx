@@ -1,10 +1,10 @@
-import { useContext, useActionState } from "react";
+import { useActionState } from "react";
 import socket from "./socketsFolder/socket";
-import { AuthContext } from "./contexts/useAuth";
+import useAuthHook from "./hooks/useAuthHook";
 
 function IdeaBox() {
   const [_, action, isLoading] = useActionState(sendMessageToServer, "none");
-  const { userData } = useContext(AuthContext);
+  const { userData } = useAuthHook();
 
   function sendMessageToServer(_, formData) {
     const idea = formData.get("idea");

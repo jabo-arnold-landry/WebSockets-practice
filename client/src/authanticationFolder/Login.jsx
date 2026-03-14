@@ -1,11 +1,11 @@
-import { useContext } from "react";
 import { sendingUserData } from "../api/authanticationsEndpoint";
-import { AuthContext } from "../contexts/useAuth";
+
 import { useNavigate } from "react-router-dom";
 import { useFormStatus } from "react-dom";
+import useAuthHook from "../hooks/useAuthHook";
 
 function Login() {
-  const { setUser } = useContext(AuthContext);
+  const { setUser } = useAuthHook();
   let location = useNavigate();
 
   async function redirectAndAssignToken(formData) {
