@@ -2,11 +2,22 @@ import { useEffect } from "react";
 import { messageSocket } from "../../socketsFolder/socket";
 import { BASEURL } from "../../api/defaultPoint";
 import { useState } from "react";
+import { useActionState } from "react";
 
 function MessageSection() {
+  const [_, action, isPending] = useActionState(sendMessage, "");
   const [recipientId, setRecipientId] = useState();
 
+  function sendMessage(_, formData) {
+    const chat = formData.get("message");
+    let obj = { recipientId, chat };
+
+    messageSocket.emit("message", obj);
+  }
+
   useEffect(() => {
+    messageSocket.connect();
+
     messageSocket.on("connect", () => {
       console.log(messageSocket.id);
     });
@@ -26,13 +37,17 @@ function MessageSection() {
       </section>
       {recipientId && (
         <section className="sending-section">
-          <input
-            type="text"
-            name="message"
-            id="message"
-            placeholder="message goes here"
-          />
-          <button>Send</button>
+          <form action={action}>
+            <input
+              type="text"
+              name="message"
+              id="message"
+              placeholder="message goes here"
+            />
+            <button disabled={isPending}>
+              {isPending ? " Sending..." : "Send"}
+            </button>
+          </form>
         </section>
       )}
     </div>
