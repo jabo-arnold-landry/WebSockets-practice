@@ -14,6 +14,8 @@ const authRouters = require("./authantication");
 const regenerateAccesToken = require("./refreshRegeneration");
 const verifyingUser = require("./tokenVerification");
 const { Idea, users } = require("./model/siteModels");
+
+
 //accepting input from the client middleware
 app.use(express.json());
 app.use(
@@ -34,6 +36,8 @@ const io = new Server(httpServer, {
 }); // creating an io instance
 const PORT = 3000;
 
+const messageRooms = io.of("/messages");
+
 //io connection initiation
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} just connected`);
@@ -49,7 +53,15 @@ io.on("connection", (socket) => {
   });
 });
 
+messageRooms.on("connection", (socket) => {
+  console.log(`new message from ${socket.id} came`);
+  socket.on("message", (res) => {
+    console.log(res);
+  });
+});
+
 app.use("/ourblog", authRouters);
+
 app.get("/currentTalk", verifyingUser, (req, res) => {
   let userDetails = req.user;
   res.status(200).json({ response, userDetails });
