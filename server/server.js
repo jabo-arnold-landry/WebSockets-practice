@@ -14,7 +14,7 @@ const authRouters = require("./authantication");
 const regenerateAccesToken = require("./refreshRegeneration");
 const verifyingUser = require("./tokenVerification");
 const { Idea, users } = require("./model/siteModels");
-
+const listOfUsers = require("./allUser");
 
 //accepting input from the client middleware
 app.use(express.json());
@@ -61,6 +61,7 @@ messageRooms.on("connection", (socket) => {
 });
 
 app.use("/ourblog", authRouters);
+app.use(listOfUsers);
 
 app.get("/currentTalk", verifyingUser, (req, res) => {
   let userDetails = req.user;
