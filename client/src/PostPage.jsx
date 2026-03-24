@@ -13,9 +13,8 @@ function PostPage() {
 
   // establishing the handshake with the backend for the io
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log(socket.id);
-    });
+    socket.auth = { user };
+    socket.connect();
 
     socket.on("liveData", (res) => {
       setPosts(res);
