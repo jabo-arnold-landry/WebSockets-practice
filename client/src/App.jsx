@@ -1,9 +1,7 @@
 import { useState } from "react";
-
-import socket from "./socketsFolder/socket";
 import IdeaBox from "./IdeaBox";
 import Login from "./authanticationFolder/Login";
-import { Route, Router, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoute";
 import PersistLogin from "./LoginPersist/PersistLogin";
 import NotFound from "./NotFound";
