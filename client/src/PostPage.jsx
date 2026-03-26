@@ -3,7 +3,7 @@ import socket from "./socketsFolder/socket";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./contexts/useAuth";
 import useAxiosPrivate from "./api/useAxios";
-import IdeaCard from "./src/IdeaCard";
+import IdeaCard from "./IdeaCard";
 
 function PostPage() {
   const [posts, setPosts] = useState([]);

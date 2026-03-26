@@ -1,12 +1,12 @@
-import { useState } from "react";
-import IdeaBox from "./IdeaBox";
+import { useState } from "react"
 import Login from "./authanticationFolder/Login";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoutes from "./ProtectedRoute";
 import PersistLogin from "./LoginPersist/PersistLogin";
 import NotFound from "./NotFound";
 import PostPage from "./PostPage";
-import MessageSection from "./src/src/MessageSection";
+import IdeaBox from "./IdeaCard"
+import MessageSection from './MessageSection'
 
 function App() {
   // states initialization and declaration section
