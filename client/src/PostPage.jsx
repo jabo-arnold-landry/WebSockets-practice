@@ -10,11 +10,11 @@ function PostPage() {
   const navigate = useNavigate();
   const fetching = useAxiosPrivate();
   const { user, setUserData } = useContext(AuthContext);
-
   // establishing the handshake with the backend for the io
   useEffect(() => {
-    socket.auth = { user };
-    socket.connect();
+    socket.on("connect", () => {
+      alert(socket.id);
+    });
 
     socket.on("liveData", (res) => {
       setPosts(res);
@@ -40,8 +40,10 @@ function PostPage() {
       socket.off("connect");
       socket.off("liveData");
       socket.off("commented");
+      socket.off("allofus");
     };
-  }, [user]);
+  }, [user, fetching, navigate]);
+
   return (
     <>
       <Link to="/chat">chat</Link>
