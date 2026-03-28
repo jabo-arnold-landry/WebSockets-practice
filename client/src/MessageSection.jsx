@@ -4,13 +4,10 @@ import { BASEURL } from "./api/defaultPoint";
 import { useState } from "react";
 import { useActionState } from "react";
 import socket from "./socketsFolder/socket";
-import { useLocation } from "react-router-dom";
 
 function MessageSection() {
   const [_, action, isPending] = useActionState(sendMessage, "");
   const [recipientId, setRecipientId] = useState();
-  const location = useLocation();
-  console.log(location);
 
   function sendMessage(_, formData) {
     const chat = formData.get("message");
@@ -20,7 +17,11 @@ function MessageSection() {
   }
 
   useEffect(() => {
+    messageSocket.on("connect", () =>
+      console.log("the message have been connected"),
+    );
     messageSocket.connect();
+
     socket.on("allofus", (res) => {
       console.log(res);
     });
@@ -28,9 +29,10 @@ function MessageSection() {
     return () => {
       messageSocket.off("message");
       messageSocket.off("connect");
+      socket.off("allofus");
     };
-  }, [recipientId]);
-  console.log(recipientId);
+  }, []);
+  // console.log(recipientId);
   return (
     <div>
       <UserList setRecipientId={setRecipientId} />
