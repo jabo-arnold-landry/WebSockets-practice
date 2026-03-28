@@ -6,6 +6,7 @@ const http = require("http");
 const cors = require("cors");
 const cookieParse = require("cookie-parser");
 const { v4 } = require("uuid");
+const jwt = require("jsonwebtoken");
 
 const response = [];
 //import of modules section
@@ -38,9 +39,27 @@ const PORT = 3000;
 
 const messageRooms = io.of("/messages");
 
+//socket middleware
+/* io.use((socket, next) => {
+  const token = socket.handshake.auth;
+  const data = jwt.verify(token.user, process.env.SECRET_KEY);
+  console.log(data);
+  next();
+});
+*/
 //io connection initiation
 io.on("connection", (socket) => {
+  const mappedUsers = io.of("/").sockets;
+  const userList = [];
+  for (let [id, socket] of mappedUsers) {
+    userList.push({
+      id,
+    });
+  }
+
   console.log(`Client ${socket.id} just connected`);
+  io.emit("allofus", userList);
+
   socket.on("fromClient", (data) => {
     const postID = v4();
     const newPostInstance = new Idea(postID, data.postOwnerID, data.idea);
