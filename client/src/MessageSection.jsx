@@ -6,6 +6,7 @@ import socket from "./socketsFolder/socket";
 function MessageSection() {
   const [_, action, isPending] = useActionState(sendMessage, "");
   const [recipientId, setRecipientId] = useState();
+  let [activeUsers, setActiveUsers] = useState([]);
 
   function sendMessage(_, formData) {
     const chat = formData.get("message");
@@ -21,7 +22,7 @@ function MessageSection() {
     messageSocket.connect();
 
     socket.on("allofus", (res) => {
-      console.log(res);
+      setActiveUsers((prev) => [...prev, ...res]);
     });
 
     return () => {
@@ -30,10 +31,11 @@ function MessageSection() {
       socket.off("allofus");
     };
   }, []);
-  // console.log(recipientId);
+  console.log(activeUsers);
   return (
     <div>
-      <UserList setRecipientId={setRecipientId} />
+      <UserList setRecipientId={setRecipientId} activeUsers={activeUsers} />
+
       <section className="discussion-section">
         <p className="sender">sending love to you</p>
         <p className="receiver">Thanks</p>
@@ -57,33 +59,33 @@ function MessageSection() {
   );
 }
 
-function UserList({ setRecipientId }) {
-  const [users, setUserList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    const abortController = new AbortController();
-    const userList = async () => {
-      try {
-        setIsLoading(true);
-        const serverResponse = await fetch(`${BASEURL}/myusers`, {
-          signal: abortController.signal,
-        });
-        const users = await serverResponse.json();
-        setUserList(users);
-      } catch (err) {
-        console.log("something bad happened: ", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    userList();
-  }, []);
+function UserList({ setRecipientId, activeUsers }) {
+  // const [users, setUserList] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+  //   const userList = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const serverResponse = await fetch(`${BASEURL}/myusers`, {
+  //         signal: abortController.signal,
+  //       });
+  //       const users = await serverResponse.json();
+  //       setUserList(users);
+  //     } catch (err) {
+  //       console.log("something bad happened: ", err);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   userList();
+  // }, []);
   return (
     <>
-      <p>{isLoading && "Loading users...."}</p>
+      {/* <p>{isLoading && "Loading users...."}</p> */}
       <ul>
-        {users.map((user) => {
-          const { id, names } = user;
+        {activeUsers.map((user) => {
+          const { id } = user;
           return (
             <li
               key={id}
@@ -92,7 +94,7 @@ function UserList({ setRecipientId }) {
                 setRecipientId(e.currentTarget.dataset.id);
               }}
             >
-              {names}
+              {id}
             </li>
           );
         })}
