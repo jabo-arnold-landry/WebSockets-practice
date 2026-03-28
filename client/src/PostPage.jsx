@@ -42,7 +42,7 @@ function PostPage() {
       socket.off("commented");
       socket.off("allofus");
     };
-  }, [user, fetching, navigate]);
+  }, [user, fetching, navigate,setUserData]);
 
   return (
     <>
