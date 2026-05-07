@@ -19,7 +19,7 @@ function PersistLogin() {
       }
     };
     !user ? verifyRefresh() : setLoading(false);
-  }, []);
+  }, [user, setUser]);
 
   return <>{loading ? <p>loading...</p> : <Outlet />}</>;
 }

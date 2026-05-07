@@ -33,7 +33,7 @@ const useAxiosPrivate = () => {
       privateEndpoint.interceptors.request.eject(requestInterceptor);
       privateEndpoint.interceptors.response.eject(responseInterceptor);
     };
-  }, [user]);
+  }, [user, setUser]);
   
   return privateEndpoint;
 };
